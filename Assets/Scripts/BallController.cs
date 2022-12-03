@@ -5,12 +5,15 @@ using UnityEngine;
 public class BallController : MonoBehaviour {
 
     [SerializeField]
+    private bool ballIsActive = false;
+
+    [SerializeField]
     private float ballSpeed;
 
     [SerializeField]
     private float maxVelocity;
 
-    private Vector3 bounceDirection;
+    public Vector3 bounceDirection;
 
     [SerializeField]
     private float[] ballSpeedLevels;
@@ -22,6 +25,7 @@ public class BallController : MonoBehaviour {
     private Animator ballAnimator;
 
     private Rigidbody rb;
+    private BallBounceChecker bbc;
 
     private bool canApplyForce = false;
     private bool canChangeVelocityDir = false;
@@ -33,15 +37,16 @@ public class BallController : MonoBehaviour {
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
+        bbc = GetComponentInChildren<BallBounceChecker>();
     }
 
     private void Start() {
 
         bounceDirection = transform.forward;
-
         ballAnimator.speed = ballSpeed;
 
     }
+
 
     private void Update() {
         // FixMe
@@ -52,11 +57,12 @@ public class BallController : MonoBehaviour {
 
         Debug.DrawRay(transform.position, bounceDirection, Color.red);
 
-        Debug.DrawRay(transform.TransformPoint(toChange + offset), bounceDirection, Color.red);
+        //Debug.DrawRay(transform.TransformPoint(toChange + offset), bounceDirection, Color.red);
 
-        Debug.DrawRay(transform.TransformPoint(toChange - offset), bounceDirection, Color.red);
+        //Debug.DrawRay(transform.TransformPoint(toChange - offset), bounceDirection, Color.red);
 
-        //Debug.DrawRay(transform.localPosition - offset, bounceDirection, Color.red);
+
+        ////Debug.DrawRay(transform.localPosition - offset, bounceDirection, Color.red);
 
         //Debug.DrawRay(transform.position, rb.velocity, Color.blue);
         //Debug.DrawRay(transform.position, colContactNormal, Color.green);
@@ -69,11 +75,10 @@ public class BallController : MonoBehaviour {
             CalculateBounceDirection();
         }
 
-        if(canApplyForce) {
+        if(canApplyForce && ballIsActive) {
             rb.AddForceAtPosition(bounceDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
 
-      
             // Calculate a rotation a step closer to the target and applies rotation to this object
             transform.rotation = Quaternion.LookRotation(bounceDirection);
         }
@@ -81,26 +86,37 @@ public class BallController : MonoBehaviour {
 
 
     private void CalculateBounceDirection() {
-        //Debug.Log(Vector3.Angle(bounceDirection, colContactNormal));
-        Vector3 toChange = transform.InverseTransformPoint(transform.position);
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if(Physics.Raycast(transform.position, bounceDirection, out hit, 1f) && hit.transform == bounceSurface.transform) {
-            bounceDirection = Vector3.Reflect(bounceDirection, colContactNormal);
-        } else if(Physics.Raycast(transform.TransformPoint(toChange + offset), bounceDirection, out hit, 1f) && hit.transform == bounceSurface.transform) {
-            bounceDirection = Vector3.Reflect(bounceDirection, colContactNormal);
-        } else if(Physics.Raycast(transform.TransformPoint(toChange - offset), bounceDirection, out hit, 1f) && hit.transform == bounceSurface.transform) {
-            bounceDirection = Vector3.Reflect(bounceDirection, colContactNormal);
-        } else {
-            bounceDirection = colContactNormal;
-            //bounceDirection = Vector3.Reflect(colContactNormal, bounceDirection);
-        }
 
-       
+        bounceDirection = Vector3.Reflect(bounceDirection, colContactNormal);
+
+        if(bbc.potencialBounceSurface != bounceSurface.transform) {
+            bounceDirection = colContactNormal;
+        } 
+
+        if(Vector3.Angle(bounceDirection, colContactNormal) == 0) {
+            Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, 0.05f));
+            bounceDirection = bounceDirection + offsetBounce.eulerAngles;
+        }
 
         bounceDirection.y = 0f;
         rb.velocity = bounceDirection.normalized * ballSpeed;
         canChangeVelocityDir = false;
+    }
+
+
+    public void activateBall() {
+        ballIsActive = true;
+        speedLevel = 0;
+        ballSpeed = ballSpeedLevels[speedLevel];
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+    }
+
+    private void resetBall() {
+        canApplyForce = false;
+        canChangeVelocityDir = false;
+        ballIsActive = false;
+        BallsManager.Instance.addBallToQueue(transform);
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -109,7 +125,7 @@ public class BallController : MonoBehaviour {
 
         if(bounceSurface.gameObject.CompareTag("Ground")) {
             canApplyForce = true;
-            rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
         } else {
             colContactNormal = collision.contacts[0].normal;
             canChangeVelocityDir = true;
@@ -126,7 +142,7 @@ public class BallController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.CompareTag("Goal")) {
-            Destroy(gameObject);
+            resetBall();
         }
     }
 }

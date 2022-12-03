@@ -90,13 +90,15 @@ public class CartController : MonoBehaviour {
         }
 
         // Calculating new position for player movement (0..1)
-        railCartPosition = Mathf.Clamp(railCartPosition + (P_currentSpeed / trackSpline.GetLength() * Time.deltaTime), 0f, 1f);
+        railCartPosition = Mathf.Clamp(railCartPosition + (P_currentSpeed / trackSpline.GetLength() * Time.deltaTime), 0.001f, 0.999f);
 
         railCartPosition = roundToThreeDigit(railCartPosition);
 
         // Update current player position with new one
         this.transform.position = track.TransformPoint(trackSpline.EvaluatePosition(railCartPosition));
 
+        // In case of rewriting movement to physics based, this is the world position/direction
+        // where force should face >> track.TransformDirection(trackSpline.EvaluatePosition(railCartPosition))
     }
 
     private void rotateCartOnSpline() {
@@ -106,6 +108,7 @@ public class CartController : MonoBehaviour {
 
         Vector3 direction = SplineUtility.EvaluateTangent(trackSpline, railCartPosition);
         Vector3 worldDirection = track.TransformDirection(direction);
+
         Vector3 targetRotation = Quaternion.Euler(0, -90f, 0) * worldDirection;
 
         if(targetRotation != Vector3.zero) {
