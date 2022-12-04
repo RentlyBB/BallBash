@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-
 public struct PlayerInputData {
     // values
     public Vector2 movementDirection;
@@ -14,22 +13,23 @@ public struct PlayerInputData {
 }
 
 public class InputManager : MonoBehaviour {
-    
-
 
     private InputActionAsset inputAsset;
     private InputActionMap gameplay;
     private InputAction movement;
-    private InputAction abilities;
+    private InputAction boost;
+    private InputAction ability;
 
     PlayerInputData inputData = new PlayerInputData();
 
     private CartController cartController;
+    private CartAbilities cartAbilities;
 
 
     private void Awake() {
 
         cartController = GetComponent<CartController>();
+        cartAbilities = GetComponent<CartAbilities>();
 
         inputAsset = this.GetComponent<PlayerInput>().actions;
         gameplay = inputAsset.FindActionMap("Gameplay");
@@ -40,9 +40,13 @@ public class InputManager : MonoBehaviour {
         movement.performed += handlePlayerInputs;
         movement.canceled += handlePlayerInputs;
 
-        abilities = gameplay.FindAction("Abilities");
-        abilities.performed += handlePlayerInputs;
-        abilities.canceled += handlePlayerInputs;
+        boost = gameplay.FindAction("Boost");
+        boost.performed += handlePlayerInputs;
+        boost.canceled += handlePlayerInputs;
+
+        ability = gameplay.FindAction("Ability");
+        ability.performed += handlePlayerInputs;
+        ability.canceled += handlePlayerInputs;
 
         gameplay.Enable();
     }
@@ -52,8 +56,11 @@ public class InputManager : MonoBehaviour {
         movement.performed -= handlePlayerInputs;
         movement.canceled -= handlePlayerInputs;
 
-        abilities.performed -= handlePlayerInputs;
-        abilities.canceled -= handlePlayerInputs;
+        boost.performed -= handlePlayerInputs;
+        boost.canceled -= handlePlayerInputs;
+
+        ability.performed -= handlePlayerInputs;
+        ability.canceled -= handlePlayerInputs;
 
         gameplay.Disable();
     }
@@ -68,27 +75,27 @@ public class InputManager : MonoBehaviour {
                     movementCanceled(ctx);
                     break;
             }
-        } else if(ctx.action.name == "Abilities") {
+        } else if(ctx.action.name == "Boost") {
             switch(ctx.phase) {
                 case InputActionPhase.Performed:
-                    abilitiesPerformed(ctx);
+                    boostPerformed(ctx);
                     break;
                 case InputActionPhase.Canceled:
-                    abilitiesCanceled(ctx);
+                    boostCanceled(ctx);
+                    break;
+            }
+        } else if(ctx.action.name == "Ability") {
+            switch(ctx.phase) {
+                case InputActionPhase.Performed:
+                    abilityPerformed(ctx);
+                    break;
+                case InputActionPhase.Canceled:
+                    abilityCanceled(ctx);
                     break;
             }
         }
 
-
         cartController.SetPlayerInput(ref inputData);
-    }
-
-    private void abilitiesPerformed(InputAction.CallbackContext ctx) {
-        cartController.accelerateMovement(true);
-    }
-
-    private void abilitiesCanceled(InputAction.CallbackContext ctx) {
-        cartController.accelerateMovement(false);
     }
 
     private void movementPerformed(InputAction.CallbackContext ctx) {
@@ -98,5 +105,21 @@ public class InputManager : MonoBehaviour {
 
     private void movementCanceled(InputAction.CallbackContext ctx) {
         inputData.isMoving = false;
+    }
+
+    private void boostPerformed(InputAction.CallbackContext ctx) {
+        cartController.accelerateMovement(true);
+    }
+
+    private void boostCanceled(InputAction.CallbackContext ctx) {
+        cartController.accelerateMovement(false);
+    }
+
+    private void abilityPerformed(InputAction.CallbackContext ctx) {
+        cartAbilities.pushBallAway();
+    }
+
+    private void abilityCanceled(InputAction.CallbackContext ctx) {
+        // Nothing yet
     }
 }

@@ -37,6 +37,9 @@ public class CartController : MonoBehaviour {
     [SerializeField]
     float railCartPosition = 0.5f;
 
+    [SerializeField]
+    private bool invertedControll = false;
+
     private SplineContainer trackSplineContainer;
 
     private Spline trackSpline;
@@ -53,6 +56,7 @@ public class CartController : MonoBehaviour {
     private float PI_movemetnDirectionX;
 
     private void Awake() {
+
         trackSplineContainer = track.GetComponent<SplineContainer>();
         trackSpline = trackSplineContainer.Spline;
     }
@@ -117,7 +121,11 @@ public class CartController : MonoBehaviour {
     }
 
     public void SetPlayerInput(ref PlayerInputData inputData) {
+
         PI_movemetnDirectionX = inputData.movementDirection.x;
+        if(invertedControll) {
+            PI_movemetnDirectionX *= -1;
+        }
         PI_isMoving = inputData.isMoving;
     }
 
@@ -129,6 +137,10 @@ public class CartController : MonoBehaviour {
             boostSpeed = 0f;
             boostCartDeceleration = 0f;
         }
+    }
+
+    public void performeAbility(bool performing) {
+        Debug.Log("Booom!");
     }
 
 

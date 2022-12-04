@@ -72,7 +72,7 @@ public class BallController : MonoBehaviour {
     private void FixedUpdate() {
 
         if(canChangeVelocityDir) {
-            CalculateBounceDirection();
+            calculateBounceDirection();
         }
 
         if(canApplyForce && ballIsActive) {
@@ -85,7 +85,7 @@ public class BallController : MonoBehaviour {
     }
 
 
-    private void CalculateBounceDirection() {
+    private void calculateBounceDirection() {
 
         bounceDirection = Vector3.Reflect(bounceDirection, colContactNormal);
 
@@ -103,6 +103,18 @@ public class BallController : MonoBehaviour {
         canChangeVelocityDir = false;
     }
 
+
+    public void changeBallDirection(Vector3 newDir) {
+        bounceDirection = newDir;
+        speedUpBall();
+    }
+
+    private void speedUpBall() {
+        if(speedLevel < (ballSpeedLevels.Length - 1)){
+            speedLevel++;
+            ballSpeed = ballSpeedLevels[speedLevel];
+        }
+    }
 
     public void activateBall() {
         ballIsActive = true;
@@ -132,11 +144,7 @@ public class BallController : MonoBehaviour {
         }
 
         if(collision.gameObject.CompareTag("Player")) {
-
-            if(speedLevel < (ballSpeedLevels.Length - 1)){ 
-                speedLevel++;
-                ballSpeed = ballSpeedLevels[speedLevel];
-            }
+            speedUpBall();
         }
     }
 

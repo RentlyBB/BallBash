@@ -37,7 +37,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Abilities"",
+                    ""name"": ""Boost"",
+                    ""type"": ""Button"",
+                    ""id"": ""76a49b7e-509e-4d82-8340-e8ec6067ee87"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability"",
                     ""type"": ""Button"",
                     ""id"": ""5300bd3f-7097-4c98-ac3a-00459d58165e"",
                     ""expectedControlType"": ""Button"",
@@ -159,78 +168,100 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b76d5af5-5a91-492e-9791-bbed63dfba48"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Abilities"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4b0d6f9c-1b71-4aae-b79a-3ad3ac447920"",
+                    ""id"": ""0e27eb68-081a-4525-b7b8-492cb74af026"",
                     ""path"": ""<DualShockGamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dd003634-69d4-4028-a65d-8c56273b86ba"",
+                    ""id"": ""7cdc71e9-d482-43d0-8b82-5b3bb49c9c2a"",
                     ""path"": ""<DualShockGamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ce05a7c4-2503-4587-9abe-24cff250e727"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a0320ed5-c401-45ae-aa23-9ed08cdbb15f"",
+                    ""id"": ""bea38dc7-135a-4a5a-9f4b-2acf80a643bb"",
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""df874106-12bf-4189-a04c-fbc86842e3f0"",
+                    ""id"": ""d4c8f930-6d02-4112-b079-7042c27c160f"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS5_controller"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bd25d54-8072-496b-a0ae-bbdbf98dff14"",
                     ""path"": ""<DualShockGamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""653b3c80-9f59-4135-a510-7ea50b6542cc"",
+                    ""id"": ""076fe43c-899c-4a7e-8b36-fc2517666dad"",
                     ""path"": ""<DualShockGamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS5_controller"",
-                    ""action"": ""Abilities"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13d2a8ee-4020-48bc-9f71-0533d5e5f5a9"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad87fc13-d86a-45ec-ba9f-adedda1516d5"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS5_controller"",
+                    ""action"": ""Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c457e0a6-2165-493e-99dd-44abdba260f7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -293,7 +324,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
-        m_Gameplay_Abilities = m_Gameplay.FindAction("Abilities", throwIfNotFound: true);
+        m_Gameplay_Boost = m_Gameplay.FindAction("Boost", throwIfNotFound: true);
+        m_Gameplay_Ability = m_Gameplay.FindAction("Ability", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -357,13 +389,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Movement;
-    private readonly InputAction m_Gameplay_Abilities;
+    private readonly InputAction m_Gameplay_Boost;
+    private readonly InputAction m_Gameplay_Ability;
     public struct GameplayActions
     {
         private @PlayerInputs m_Wrapper;
         public GameplayActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
-        public InputAction @Abilities => m_Wrapper.m_Gameplay_Abilities;
+        public InputAction @Boost => m_Wrapper.m_Gameplay_Boost;
+        public InputAction @Ability => m_Wrapper.m_Gameplay_Ability;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,9 +410,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
-                @Abilities.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbilities;
-                @Abilities.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbilities;
-                @Abilities.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbilities;
+                @Boost.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBoost;
+                @Boost.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBoost;
+                @Boost.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBoost;
+                @Ability.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbility;
+                @Ability.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbility;
+                @Ability.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAbility;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -386,9 +423,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
-                @Abilities.started += instance.OnAbilities;
-                @Abilities.performed += instance.OnAbilities;
-                @Abilities.canceled += instance.OnAbilities;
+                @Boost.started += instance.OnBoost;
+                @Boost.performed += instance.OnBoost;
+                @Boost.canceled += instance.OnBoost;
+                @Ability.started += instance.OnAbility;
+                @Ability.performed += instance.OnAbility;
+                @Ability.canceled += instance.OnAbility;
             }
         }
     }
@@ -447,7 +487,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnAbilities(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
+        void OnAbility(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
