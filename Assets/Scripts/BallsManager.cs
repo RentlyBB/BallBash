@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallsManager : MonoBehaviour{
+public class BallsManager : Singleton<BallsManager>{
 
-    public static BallsManager Instance { get; private set; }
+    // public static BallsManager Instance { get; private set; }
+
+    protected BallsManager() { }
 
     [SerializeField]
     private List<Transform> list_spawnPoints;
@@ -31,11 +33,11 @@ public class BallsManager : MonoBehaviour{
     private void Awake() {
 
         //Singleton init
-        if(Instance != null && Instance != this) {
-            Destroy(this);
-        } else {
-            Instance = this;
-        }
+        //if(Instance != null && Instance != this) {
+        //    Destroy(this);
+        //} else {
+        //    Instance = this;
+        //}
 
         // Get all ball's spawn points
         foreach(Transform child in transform) {

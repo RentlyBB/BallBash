@@ -573,8 +573,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6832448633255547104, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
         type: 3}
+      propertyPath: m_SplitScreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832448633255547104, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
+        type: 3}
       propertyPath: m_JoinBehavior
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832448633255547104, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
+        type: 3}
+      propertyPath: m_MaxPlayerCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6832448633255547105, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
         type: 3}
@@ -640,7 +650,7 @@ PrefabInstance:
     - target: {fileID: 6832448633255547107, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
         type: 3}
       propertyPath: numberOfPlayers
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6832448633255547107, guid: e12ab59ab128f8c4681a2a27dbd6ac42,
         type: 3}

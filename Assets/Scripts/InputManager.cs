@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour {
     private InputAction movement;
     private InputAction boost;
     private InputAction ability;
+    private PlayerInput playerInput;
 
     PlayerInputData inputData = new PlayerInputData();
 
@@ -30,8 +31,15 @@ public class InputManager : MonoBehaviour {
 
         cartController = GetComponent<CartController>();
         cartAbilities = GetComponent<CartAbilities>();
+        playerInput = GetComponent<PlayerInput>();
 
-        inputAsset = this.GetComponent<PlayerInput>().actions;
+        foreach(InputDevice s in playerInput.devices) { 
+            Debug.Log(s.displayName);
+        }
+
+
+        inputAsset = GetComponent<PlayerInput>().actions;
+
         gameplay = inputAsset.FindActionMap("Gameplay");
     }
 
