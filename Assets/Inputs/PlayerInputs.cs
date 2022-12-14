@@ -245,6 +245,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""bd2daa04-b906-4a45-8465-de5ca4027d5e"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Boost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ad87fc13-d86a-45ec-ba9f-adedda1516d5"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
@@ -264,6 +275,72 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73dd5073-00e7-4451-9607-59bc85c23da8"",
+                    ""path"": ""<Keyboard>/rightAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""IJKL"",
+                    ""id"": ""0964b3d9-fc64-4854-9d9e-3a1909522349"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d9006046-91c4-4b4e-8069-fe2b5a9d4d2a"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""ce560039-4882-455d-b527-d22f27f64dbe"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7517a953-bc63-49bd-81ea-7d30b09c80dc"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""aeda5701-788d-4c94-9966-91d909dc1948"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard_P2"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -314,6 +391,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<DualSenseGamepadHID>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Keyboard_P2"",
+            ""bindingGroup"": ""Keyboard_P2"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -482,6 +570,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_PS5_controllerSchemeIndex == -1) m_PS5_controllerSchemeIndex = asset.FindControlSchemeIndex("PS5_controller");
             return asset.controlSchemes[m_PS5_controllerSchemeIndex];
+        }
+    }
+    private int m_Keyboard_P2SchemeIndex = -1;
+    public InputControlScheme Keyboard_P2Scheme
+    {
+        get
+        {
+            if (m_Keyboard_P2SchemeIndex == -1) m_Keyboard_P2SchemeIndex = asset.FindControlSchemeIndex("Keyboard_P2");
+            return asset.controlSchemes[m_Keyboard_P2SchemeIndex];
         }
     }
     public interface IGameplayActions

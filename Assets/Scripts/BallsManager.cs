@@ -39,7 +39,9 @@ public class BallsManager : MonoBehaviour{
 
         // Get all ball's spawn points
         foreach(Transform child in transform) {
-            list_spawnPoints.Add(child);
+            if(child.gameObject.activeSelf) {
+                list_spawnPoints.Add(child);
+            }
         }
 
         // Create all balls for the arena

@@ -108,8 +108,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1382207327696127644}
   - component: {fileID: 6680635517859957025}
-  - component: {fileID: 7367361376607369800}
   - component: {fileID: 4944525912025785335}
+  - component: {fileID: 7367361376607369800}
   - component: {fileID: 5102559644538624143}
   - component: {fileID: 6904323389636824446}
   m_Layer: 0
@@ -135,7 +135,7 @@ Transform:
   - {fileID: 2579198800711815132}
   - {fileID: 8610271689631099628}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6680635517859957025
 Rigidbody:
@@ -153,18 +153,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7367361376607369800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4835562228064208883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ffa7d189d020142b45a488b179f300, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4944525912025785335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +196,18 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7367361376607369800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4835562228064208883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ffa7d189d020142b45a488b179f300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5102559644538624143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +229,7 @@ MonoBehaviour:
   P_additionalBoostSpeed: 3
   P_additionalBoostDeceleration: 0.03
   railCartPosition: 0.5
-  invertedControll: 1
+  invertedControll: 0
 --- !u!114 &6904323389636824446
 MonoBehaviour:
   m_ObjectHideFlags: 0

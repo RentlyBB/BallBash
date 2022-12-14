@@ -7,8 +7,7 @@ using System;
 
 public class CartController : MonoBehaviour {
 
-    [SerializeField]
-    private Transform track;
+    public Transform track;
 
     [Header("Standart Movement")]
     [SerializeField]
@@ -55,13 +54,11 @@ public class CartController : MonoBehaviour {
     private bool PI_isMoving = false;
     private float PI_movemetnDirectionX;
 
-    private void Awake() {
+    private void Start() {
 
         trackSplineContainer = track.GetComponent<SplineContainer>();
         trackSpline = trackSplineContainer.Spline;
-    }
-
-    private void Start() {
+        
         // Set starting position for player
         this.transform.position = track.TransformPoint(trackSpline.EvaluatePosition(railCartPosition));
     }
