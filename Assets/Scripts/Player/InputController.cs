@@ -12,7 +12,7 @@ public struct PlayerInputData {
     public bool isMoving;
 }
 
-public class InputManager : MonoBehaviour {
+public class InputController : MonoBehaviour {
 
     private InputActionAsset inputAsset;
     private InputActionMap gameplay;
@@ -32,11 +32,6 @@ public class InputManager : MonoBehaviour {
         cartController = GetComponent<CartController>();
         cartAbilities = GetComponent<CartAbilities>();
         playerInput = GetComponent<PlayerInput>();
-
-        foreach(InputDevice s in playerInput.devices) { 
-            Debug.Log(s.displayName);
-        }
-
 
         inputAsset = GetComponent<PlayerInput>().actions;
 
