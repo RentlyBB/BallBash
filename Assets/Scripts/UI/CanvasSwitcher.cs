@@ -39,7 +39,8 @@ public class CanvasSwitcher : MonoBehaviour {
                 break;
             case CanvasManager.ButtonType.PlayerNumberSelection:
                 canvasManager.switchCanvas(desiredCanvas);
-                playerManager.setPlayerNumber(numberOfPlayers);
+                playerManager.numberOfPlayers = numberOfPlayers;
+                canvasManager.updatePlayersSelectionBoxes();
                 break;
             case CanvasManager.ButtonType.StartGame:
                 canvasManager.switchCanvas(desiredCanvas);

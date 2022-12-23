@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CartAbilities : MonoBehaviour {
+public class PushBallsAbility : MonoBehaviour, IAbility {
 
+    //PushBalls ability variables
     public float radius;
 
     [Range(0, 360)]
@@ -11,11 +12,12 @@ public class CartAbilities : MonoBehaviour {
 
     public LayerMask targetMask;
 
-    public Vector3 lastDir;
+    [HideInInspector]
+    public bool canSeeBall { get; private set; } = false;
 
-    public bool canSeeBall = false;
+    [HideInInspector]
+    public Collider[] rayData { get; private set; }
 
-    public Collider[] rayData;
 
     private void Start() {
         //Debug in editor
@@ -40,7 +42,7 @@ public class CartAbilities : MonoBehaviour {
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
 
                 if(Vector3.Angle(transform.forward, directionToTarget) < angle / 2) {
-                    target.GetComponent<BallController>().changeBallDirection(directionToTarget);
+                    target.GetComponent<BallMovement>().changeBallDirection(directionToTarget);
                 }
             }
         }
@@ -65,4 +67,12 @@ public class CartAbilities : MonoBehaviour {
             canSeeBall = false;
         }
     }
+
+    public void activateAbility() {
+        pushBallAway();
+    }
+
+    public void deactivateAbility() {
+    }
 }
+

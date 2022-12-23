@@ -33,6 +33,8 @@ public class InputTypeBtnController : MonoBehaviour {
             currentInputType = 0;
         }
         btnText.text = inputTypes[currentInputType];
+
+
     }
 
 }

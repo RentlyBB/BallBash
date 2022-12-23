@@ -3,34 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public struct PlayerInputData {
+
     // values
-    public Vector2 movementDirection;
+    public float movementDirection;
 
     // state
     public bool isMoving;
+
+    public bool horizontalMovement;
+
+    public bool invertMovement;
 }
+
+[RequireComponent(typeof(CartController))]
 
 public class InputController : MonoBehaviour {
 
     private InputActionAsset inputAsset;
     private InputActionMap gameplay;
-    private InputAction movement;
-    private InputAction boost;
-    private InputAction ability;
+    private InputAction ia_movement;
+    private InputAction ia_boost;
+    private InputAction ia_ability;
     private PlayerInput playerInput;
 
     PlayerInputData inputData = new PlayerInputData();
 
     private CartController cartController;
-    private CartAbilities cartAbilities;
+    private IAbility ability;
 
 
     private void Awake() {
 
         cartController = GetComponent<CartController>();
-        cartAbilities = GetComponent<CartAbilities>();
+        
+        ability = GetComponent<IAbility>();
+
         playerInput = GetComponent<PlayerInput>();
 
         inputAsset = GetComponent<PlayerInput>().actions;
@@ -38,32 +46,52 @@ public class InputController : MonoBehaviour {
         gameplay = inputAsset.FindActionMap("Gameplay");
     }
 
+    private void Start() {
+        switch(playerInput.playerIndex){
+            case 0:
+                inputData.horizontalMovement = true;
+                inputData.invertMovement = false;
+                break;
+            case 1:
+                inputData.horizontalMovement = true;
+                inputData.invertMovement = true;
+                break;
+            case 2:
+                inputData.horizontalMovement = false;
+                inputData.invertMovement = false;
+                break;
+            case 3:
+                inputData.horizontalMovement = false;
+                inputData.invertMovement = true;
+                break;
+        }
+    }
+
     private void OnEnable() {
-        movement = gameplay.FindAction("Movement");
-        movement.performed += handlePlayerInputs;
-        movement.canceled += handlePlayerInputs;
+        ia_movement = gameplay.FindAction("Movement");
+        ia_movement.performed += handlePlayerInputs;
+        ia_movement.canceled += handlePlayerInputs;
 
-        boost = gameplay.FindAction("Boost");
-        boost.performed += handlePlayerInputs;
-        boost.canceled += handlePlayerInputs;
+        ia_boost = gameplay.FindAction("Boost");
+        ia_boost.performed += handlePlayerInputs;
+        ia_boost.canceled += handlePlayerInputs;
 
-        ability = gameplay.FindAction("Ability");
-        ability.performed += handlePlayerInputs;
-        ability.canceled += handlePlayerInputs;
+        ia_ability = gameplay.FindAction("Ability");
+        ia_ability.performed += handlePlayerInputs;
+        ia_ability.canceled += handlePlayerInputs;
 
         gameplay.Enable();
     }
 
-
     private void OnDisable() {
-        movement.performed -= handlePlayerInputs;
-        movement.canceled -= handlePlayerInputs;
+        ia_movement.performed -= handlePlayerInputs;
+        ia_movement.canceled -= handlePlayerInputs;
 
-        boost.performed -= handlePlayerInputs;
-        boost.canceled -= handlePlayerInputs;
+        ia_boost.performed -= handlePlayerInputs;
+        ia_boost.canceled -= handlePlayerInputs;
 
-        ability.performed -= handlePlayerInputs;
-        ability.canceled -= handlePlayerInputs;
+        ia_ability.performed -= handlePlayerInputs;
+        ia_ability.canceled -= handlePlayerInputs;
 
         gameplay.Disable();
     }
@@ -98,11 +126,16 @@ public class InputController : MonoBehaviour {
             }
         }
 
-        cartController.SetPlayerInput(ref inputData);
+        cartController.setPlayerInput(ref inputData);
     }
 
     private void movementPerformed(InputAction.CallbackContext ctx) {
-        inputData.movementDirection = ctx.ReadValue<Vector2>();
+        if(inputData.horizontalMovement) {
+            inputData.movementDirection = ctx.ReadValue<Vector2>().x;
+        } else { 
+            inputData.movementDirection = ctx.ReadValue<Vector2>().y;
+        }
+
         inputData.isMoving = true;
     }
 
@@ -119,10 +152,13 @@ public class InputController : MonoBehaviour {
     }
 
     private void abilityPerformed(InputAction.CallbackContext ctx) {
-        cartAbilities.pushBallAway();
+        if (ability != null) ability.activateAbility();
+        else Debug.LogWarning("No ability not assigned.");
+
     }
 
     private void abilityCanceled(InputAction.CallbackContext ctx) {
-        // Nothing yet
+        if(ability != null) ability.deactivateAbility();
+        else Debug.LogWarning("No ability not assigned.");
     }
 }

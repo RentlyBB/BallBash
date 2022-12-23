@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06929d002370410449b0bc49a26d698a, type: 3}
+  m_Name: InputData
+  m_EditorClassIdentifier: 
+  availableDevices:
+  - deviceId: 1
+    deviceName: Keyboard
+    device: Keyboard
+  - deviceId: 11
+    deviceName: Wireless Controller
+    device: 
+  - deviceId: 11
+    deviceName: Wireless Controller
+    device: 
+  inputAsset: {fileID: -944628639613478452, guid: 17afb57c0d876cd41b1aacd6e9d13ed4,
+    type: 3}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using System;
@@ -36,9 +34,6 @@ public class CartController : MonoBehaviour {
     [SerializeField]
     float railCartPosition = 0.5f;
 
-    [SerializeField]
-    private bool invertedControll = false;
-
     private SplineContainer trackSplineContainer;
 
     private Spline trackSpline;
@@ -52,10 +47,11 @@ public class CartController : MonoBehaviour {
 
     // INPUT DATA
     private bool PI_isMoving = false;
-    private float PI_movemetnDirectionX;
+    private float PI_movemetnDirection;
 
     private void Start() {
 
+        track = transform.parent.transform;
         trackSplineContainer = track.GetComponent<SplineContainer>();
         trackSpline = trackSplineContainer.Spline;
         
@@ -73,7 +69,7 @@ public class CartController : MonoBehaviour {
 
         // Set up movement values based on playersMovement state (moving/not_moving)
         if(PI_isMoving) {
-            targetSpeed = (P_cartMaxSpeed + boostSpeed) * PI_movemetnDirectionX;
+            targetSpeed = (P_cartMaxSpeed + boostSpeed) * PI_movemetnDirection;
             velSmoothTime = P_cartAccelerationTime;
         } else {
             targetSpeed = 0f;
@@ -117,12 +113,14 @@ public class CartController : MonoBehaviour {
         }
     }
 
-    public void SetPlayerInput(ref PlayerInputData inputData) {
+    public void setPlayerInput(ref PlayerInputData inputData) {
 
-        PI_movemetnDirectionX = inputData.movementDirection.x;
-        if(invertedControll) {
-            PI_movemetnDirectionX *= -1;
+        PI_movemetnDirection = inputData.movementDirection;
+
+        if(inputData.invertMovement) {
+            PI_movemetnDirection *= -1;
         }
+
         PI_isMoving = inputData.isMoving;
     }
 

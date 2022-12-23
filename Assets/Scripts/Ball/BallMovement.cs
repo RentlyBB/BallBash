@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour {
-
-    [SerializeField]
-    private bool ballIsActive = false;
+public class BallMovement : MonoBehaviour {
 
     [SerializeField]
     private float ballSpeed;
@@ -28,7 +25,6 @@ public class BallController : MonoBehaviour {
     private bool canSpeedUp = true;
 
     private Rigidbody rb;
-    private BallBounceChecker bbc;
 
     private bool canApplyForce = false;
     private bool canChangeVelocityDir = false;
@@ -40,12 +36,19 @@ public class BallController : MonoBehaviour {
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
-        bbc = GetComponentInChildren<BallBounceChecker>();
     }
 
     private void Start() {
-        bounceDirection = transform.forward;
+        
         ballAnimator.speed = ballSpeed;
+    }
+
+    private void OnEnable() {
+        activateBall();
+    }
+
+    private void OnDisable() {
+        resetBall();
     }
 
     private void Update() {
@@ -60,8 +63,8 @@ public class BallController : MonoBehaviour {
         if(canChangeVelocityDir) {
             calculateBounceDirection();
         }
-
-        if(canApplyForce && ballIsActive) {
+        
+        if(canApplyForce && canApplyForce) {
             rb.AddForceAtPosition(bounceDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
 
@@ -69,7 +72,6 @@ public class BallController : MonoBehaviour {
             transform.rotation = Quaternion.LookRotation(bounceDirection);
         }
     }
-
 
     private void calculateBounceDirection() {
 
@@ -98,21 +100,21 @@ public class BallController : MonoBehaviour {
     }
 
     public void activateBall() {
-        ballIsActive = true;
-        canApplyForce = true;
         speedLevel = 0;
         ballSpeed = ballSpeedLevels[speedLevel];
+        bounceDirection = transform.forward;
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        rb.AddForceAtPosition(bounceDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
     }
 
     private void resetBall() {
         canApplyForce = false;
         canChangeVelocityDir = false;
-        ballIsActive = false;
-        BallsManager.Instance.addBallToQueue(transform);
-        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
+
+    public void disableBall() { 
+        
+    }
+
 
     private void OnCollisionEnter(Collision collision) {
 
@@ -120,25 +122,26 @@ public class BallController : MonoBehaviour {
 
         if(bounceSurface.gameObject.CompareTag("Ground")) {
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            canApplyForce = true;
         } else {
             colContactNormal = collision.contacts[0].normal;
             canChangeVelocityDir = true;
         }
 
-        if(collision.gameObject.CompareTag("Player")) {
+        if(collision.transform.GetComponent<CartController>()) {
             speedUpBall();
         }
     }
 
     private void OnCollisionStay(Collision collision) {
-        if(collision.transform.CompareTag("Player") && collision.contacts[0].normal != colContactNormal) {
+        if(collision.transform.GetComponent<CartController>() && collision.contacts[0].normal != colContactNormal) {
             bounceDirection = collision.contacts[0].normal;
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.CompareTag("Goal")) {
-            resetBall();
+            gameObject.SetActive(false);
         }
     }
 }

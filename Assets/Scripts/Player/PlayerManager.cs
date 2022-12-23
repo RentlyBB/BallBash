@@ -13,12 +13,10 @@ public class PlayerManager : Singleton<PlayerManager> {
     [SerializeField]
     private GameObject playerTrackPrefab;
 
-    [SerializeField]
-    private GameObject playerCart;
+    public int numberOfPlayers;
 
     [SerializeField]
-    private int numberOfPlayers;
-
+    private bool spawnPlayersOnStart = false;
 
     private void Awake() {
 
@@ -26,27 +24,59 @@ public class PlayerManager : Singleton<PlayerManager> {
     }
 
     private void Start() {
-        //addPlayers();
-    }
-
-    public void setPlayerNumber(int number) {
-        numberOfPlayers = number;
+        if(spawnPlayersOnStart) {
+            addPlayers();
+        }
     }
 
     public void addPlayers() {
         if(list_spawnPoints != null) {
             for(int i = 0; i < numberOfPlayers; i++) {
                 GameObject track = Instantiate(playerTrackPrefab, list_spawnPoints[i].transform.position, list_spawnPoints[i].transform.rotation);
-                GameObject player = PlayerInput.Instantiate(playerCart, i, "Keyboard", -1, Keyboard.current).gameObject;
-               // GameObject player = Instantiate(playerCart, list_spawnPoints[i].transform.position, list_spawnPoints[i].transform.rotation);
-                player.name = player.name + "_P" + i;
-                player.GetComponent<CartController>().track = track.transform;
+                track.name = track.name + "_P" + i;
+
+                PlayerInput cartInput = track.GetComponentInChildren<PlayerInput>();
+                cartInput.SwitchCurrentControlScheme(getPlayerInputScheme(i), Keyboard.current);
+
             }
         }
 
         foreach(var player in PlayerInput.all) {
             Debug.Log("Player ID: " + player.playerIndex + ", Player Name: " + player.name + ", Player Controll Scheme: " + player.currentControlScheme);
         }
+    }
+
+
+    private string getPlayerInputScheme(int playerId) {
+        switch(playerId) {
+            case 0:
+                return "Keyboard";
+            case 1:
+                return "Keyboard_P2";
+            case 2:
+                return "Keyboard_P3";
+            case 3:
+                return "Keyboard_P4";
+            default:
+                return "Keyboard";
+        }
+    }
+
+    private InputDevice getDeviceForPlayer(int deviceID) {
+
+        InputDevice usedDevice = null;
+
+        foreach(InputDevice device in InputSystem.devices) {
+            if(deviceID == device.deviceId) {
+                usedDevice = device;
+            }
+        }
+
+        if(usedDevice == null) {
+            usedDevice = InputSystem.devices[0];
+        }
+
+        return usedDevice;
     }
 
     void OnPlayerJoined(PlayerInput playerInput) {

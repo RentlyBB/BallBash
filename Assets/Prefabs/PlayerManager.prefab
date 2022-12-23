@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NotificationBehavior: 2
-  m_MaxPlayerCount: 2
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: 4
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 2
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   list_spawnPoints: []
-  players: []
-  playerTrackPrefab: {fileID: 2671274399937027224, guid: 73ba25f5048271c45bf2eaf789dbe6fb,
+  playerTrackPrefab: {fileID: 3633398699277717279, guid: 6ddb61872defd1242a356e1a61f53add,
     type: 3}
-  numberOfPlayers: 0
+  numberOfPlayers: 3
+  spawnPlayersOnStart: 0

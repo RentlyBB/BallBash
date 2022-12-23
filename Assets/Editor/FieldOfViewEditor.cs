@@ -3,10 +3,10 @@ using UnityEngine;
 
 
 
-[CustomEditor(typeof(CartAbilities))]
+[CustomEditor(typeof(PushBallsAbility))]
 public class FieldOfViewEditor : Editor {
     private void OnSceneGUI() {
-        CartAbilities fov = (CartAbilities)target;
+        PushBallsAbility fov = (PushBallsAbility)target;
         Handles.color = Color.white;
         Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.radius);
 
