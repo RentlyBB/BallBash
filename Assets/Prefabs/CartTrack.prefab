@@ -511,4 +511,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0833b617388e777458589a4478f7ffa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMagnetActive: 0
+  magnetTime: 7
+  magnetedBalls: []

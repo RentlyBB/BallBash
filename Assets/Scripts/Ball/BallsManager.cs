@@ -64,11 +64,11 @@ public class BallsManager : MonoBehaviour {
     }
 
     private void OnEnable() {
-        CanvasSwitcher.startGame += gameStarted;
+        CanvasSwitcher.onStartGame += gameStarted;
     }
 
     private void OnDisable() {
-        CanvasSwitcher.startGame -= gameStarted;
+        CanvasSwitcher.onStartGame -= gameStarted;
     }
 
     private void gameStarted() {

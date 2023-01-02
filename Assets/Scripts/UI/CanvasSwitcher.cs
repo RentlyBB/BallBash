@@ -12,7 +12,7 @@ using UnityEditor;
 public class CanvasSwitcher : MonoBehaviour {
 
     public delegate void StartGame();
-    public static StartGame startGame;
+    public static event StartGame onStartGame;
 
 
     [Header("The type of canvas you want to switch to.")]
@@ -50,7 +50,7 @@ public class CanvasSwitcher : MonoBehaviour {
                 canvasManager.switchCanvas(desiredCanvas);
                 GameObject.FindGameObjectWithTag("Logo").SetActive(false);
                 playerManager.addPlayers();
-                startGame?.Invoke();
+                onStartGame?.Invoke();
                 break;
         }
         

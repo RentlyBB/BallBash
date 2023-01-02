@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BallMagnetAbility : MonoBehaviour, IAbility {
 
-
-    public delegate void PushAllBalls();
-    public static PushAllBalls pushAllBalls;
+    public delegate void DemagnetBalls();
+    public static event DemagnetBalls onDemagnetBalls;
 
     private bool isMagnetActive = false;
+
+    public float magnetTime = 5;
 
     [SerializeField]
     private List<BallMagnetBehaviour> magnetedBalls;
@@ -21,12 +22,29 @@ public class BallMagnetAbility : MonoBehaviour, IAbility {
         isMagnetActive = false;
 
         foreach(BallMagnetBehaviour bb in magnetedBalls) {
-            transform.parent = null;
+            bb.pushBall();
         }
 
         magnetedBalls.Clear();
+        StopCoroutine(demagnetBallsOverTime());
 
-        pushAllBalls?.Invoke();
+    }
+
+    IEnumerator demagnetBallsOverTime() {
+        yield return new WaitForSeconds(magnetTime);
+        if(magnetedBalls.Count > 0) { 
+            demagnetBalls();
+        }
+
+    }
+
+
+    private void demagnetBalls() {
+        Debug.Log("Demagnet!!");
+        isMagnetActive = false;
+        magnetedBalls.Clear();
+        onDemagnetBalls?.Invoke();
+
     }
 
 
@@ -35,9 +53,11 @@ public class BallMagnetAbility : MonoBehaviour, IAbility {
             var curBall = col.gameObject.GetComponent<BallMagnetBehaviour>();
 
             if(isMagnetActive) {
-                Debug.Log("MAGNEEET");
                 curBall.magnetBall(col.contacts[0].point, col.contacts[0].normal, this.transform);
-                
+                magnetedBalls.Add(curBall);
+
+                StartCoroutine(demagnetBallsOverTime());
+
             }
         }
     }

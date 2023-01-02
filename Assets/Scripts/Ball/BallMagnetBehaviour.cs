@@ -13,16 +13,17 @@ public class BallMagnetBehaviour : MonoBehaviour {
     }
 
     private void OnEnable() {
-        BallMagnetAbility.pushAllBalls += pushBall;
+        BallMagnetAbility.onDemagnetBalls += demagnetBall;
     }
 
     private void OnDisable() {
-        BallMagnetAbility.pushAllBalls -= pushBall;
+        BallMagnetAbility.onDemagnetBalls -= demagnetBall;
     }
 
     public void magnetBall(Vector3 magnetPos, Vector3 pushDir, Transform parent) {
         ballMovement.changeBallDirection(pushDir);
-        ballMovement.transform.position = magnetPos;
+        ballMovement.transform.position = new Vector3(magnetPos.x, ballMovement.transform.position.y, magnetPos.z);
+        
         ballMovement.canApplyForce = false;
         ballMovement.changeBallRotation();
         rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -30,8 +31,14 @@ public class BallMagnetBehaviour : MonoBehaviour {
         transform.SetParent(parent);
     }
 
-    public void pushBall() {
+    private void demagnetBall() {
+        ballMovement.setBallSpeed(0);
+        transform.parent = null;
+        ballMovement.canApplyForce = true;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+    }
 
+    public void pushBall() {
         ballMovement.speedUpBall();
         transform.parent = null;
         ballMovement.canApplyForce = true;

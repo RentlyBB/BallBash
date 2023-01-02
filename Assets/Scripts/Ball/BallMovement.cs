@@ -113,7 +113,12 @@ public class BallMovement : MonoBehaviour {
         speedLevel = 0;
         ballSpeed = ballSpeedLevels[speedLevel];
         bounceDirection = transform.forward;
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        rb.constraints = active;
+    }
+
+    public void setBallSpeed(int levelOfSpeed) {
+        speedLevel = levelOfSpeed;
+        ballSpeed = ballSpeedLevels[speedLevel];
     }
 
     public void resetBall() {

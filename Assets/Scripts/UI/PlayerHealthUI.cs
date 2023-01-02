@@ -22,12 +22,12 @@ public class PlayerHealthUI : MonoBehaviour {
 
 
     private void OnEnable() {
-        CanvasSwitcher.startGame += updateUIOnStartGame;
+        CanvasSwitcher.onStartGame += updateUIOnStartGame;
         GoalHandler.goalScored += updatePlayerHealth;
     }
 
     private void OnDisable() {
-        CanvasSwitcher.startGame -= updateUIOnStartGame;
+        CanvasSwitcher.onStartGame -= updateUIOnStartGame;
         GoalHandler.goalScored -= updatePlayerHealth;
     }
 

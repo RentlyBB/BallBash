@@ -16,11 +16,11 @@ public class GoalHandler : MonoBehaviour {
 
 
     private void OnEnable() {
-        CanvasSwitcher.startGame += checkIfDead;
+        CanvasSwitcher.onStartGame += checkIfDead;
     }
 
     private void OnDisable() {
-        CanvasSwitcher.startGame -= checkIfDead;
+        CanvasSwitcher.onStartGame -= checkIfDead;
     }
 
     private void checkIfDead() {
