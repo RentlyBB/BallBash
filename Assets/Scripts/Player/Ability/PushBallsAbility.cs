@@ -43,6 +43,7 @@ public class PushBallsAbility : MonoBehaviour, IAbility {
 
                 if(Vector3.Angle(transform.forward, directionToTarget) < angle / 2) {
                     target.GetComponent<BallMovement>().changeBallDirection(directionToTarget);
+                    target.GetComponent<BallMovement>().speedUpBall();
                 }
             }
         }

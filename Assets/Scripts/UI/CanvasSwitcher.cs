@@ -11,6 +11,10 @@ using UnityEditor;
 [RequireComponent(typeof(Button))]
 public class CanvasSwitcher : MonoBehaviour {
 
+    public delegate void StartGame();
+    public static StartGame startGame;
+
+
     [Header("The type of canvas you want to switch to.")]
     public CanvasManager.CanvasType desiredCanvas;
     
@@ -46,6 +50,7 @@ public class CanvasSwitcher : MonoBehaviour {
                 canvasManager.switchCanvas(desiredCanvas);
                 GameObject.FindGameObjectWithTag("Logo").SetActive(false);
                 playerManager.addPlayers();
+                startGame?.Invoke();
                 break;
         }
         

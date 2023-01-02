@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour {
 
+    public const RigidbodyConstraints freezeAll = RigidbodyConstraints.FreezeAll;
+    public const RigidbodyConstraints active = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+    public const RigidbodyConstraints afterTouchGround = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
     [SerializeField]
     private float ballSpeed;
 
@@ -24,9 +28,12 @@ public class BallMovement : MonoBehaviour {
     [SerializeField]
     private bool canSpeedUp = true;
 
-    private Rigidbody rb;
+    [HideInInspector]
+    public Rigidbody rb;
 
-    private bool canApplyForce = false;
+    [HideInInspector]
+    public bool canApplyForce = false;
+
     private bool canChangeVelocityDir = false;
     private Vector3 colContactNormal = Vector3.forward;
 
@@ -64,7 +71,7 @@ public class BallMovement : MonoBehaviour {
             calculateBounceDirection();
         }
         
-        if(canApplyForce && canApplyForce) {
+        if(canApplyForce) {
             rb.AddForceAtPosition(bounceDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
 
@@ -89,10 +96,13 @@ public class BallMovement : MonoBehaviour {
 
     public void changeBallDirection(Vector3 newDir) {
         bounceDirection = newDir;
-        speedUpBall();
     }
 
-    private void speedUpBall() {
+    public void changeBallRotation() {
+        transform.rotation = Quaternion.LookRotation(bounceDirection);
+    }
+
+    public void speedUpBall() {
         if(speedLevel < (ballSpeedLevels.Length - 1) && canSpeedUp){
             speedLevel++;
             ballSpeed = ballSpeedLevels[speedLevel];
@@ -106,15 +116,10 @@ public class BallMovement : MonoBehaviour {
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
     }
 
-    private void resetBall() {
+    public void resetBall() {
         canApplyForce = false;
         canChangeVelocityDir = false;
     }
-
-    public void disableBall() { 
-        
-    }
-
 
     private void OnCollisionEnter(Collision collision) {
 
@@ -139,10 +144,10 @@ public class BallMovement : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Goal")) {
-            gameObject.SetActive(false);
-        }
-    }
+    //private void OnTriggerEnter(Collider other) {
+    //    if(other.gameObject.CompareTag("Goal")) {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
 }
 

@@ -125,6 +125,7 @@ public class CartController : MonoBehaviour {
     }
 
     public void accelerateMovement(bool accelerate) {
+
         if(accelerate) {
             boostSpeed = P_additionalBoostSpeed;
             boostCartDeceleration = P_additionalBoostDeceleration;

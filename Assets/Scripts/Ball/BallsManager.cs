@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallsManager : MonoBehaviour{
+public class BallsManager : MonoBehaviour {
 
     protected BallsManager() { }
 
@@ -19,12 +19,14 @@ public class BallsManager : MonoBehaviour{
 
     [SerializeField]
     [Header("Spawn Time Range (sec)")]
-    private Vector2 timeRange = new Vector2(5,10);
+    private Vector2 timeRange = new Vector2(5, 10);
 
     private Vector3 ballStorage = new Vector3(10, 5, 10);
 
     public float curTime = 0f;
     private float timeToSpawn = 0f;
+
+    private bool isGameStarted;
 
 
     private void Awake() {
@@ -47,6 +49,9 @@ public class BallsManager : MonoBehaviour{
     private void Start() {
         setRandomSpawnTime();
         curTime = 0f;
+
+
+        isGameStarted = false;
     }
 
     private void FixedUpdate() {
@@ -58,12 +63,24 @@ public class BallsManager : MonoBehaviour{
         }
     }
 
+    private void OnEnable() {
+        CanvasSwitcher.startGame += gameStarted;
+    }
+
+    private void OnDisable() {
+        CanvasSwitcher.startGame -= gameStarted;
+    }
+
+    private void gameStarted() {
+        isGameStarted = true;
+    }
+
     private void setRandomSpawnTime() {
         timeToSpawn = Random.Range(timeRange.x, timeRange.y);
     }
 
     private void putBallToPlay() {
-        if(curTime > timeToSpawn) {
+        if(curTime > timeToSpawn && isGameStarted) {
             Transform spawnPoint = list_spawnPoints[Random.Range(0, list_spawnPoints.Count)];
 
             Transform ballToSpawn = list_ballsQueue.Find(ball => ball.gameObject.activeSelf == false);

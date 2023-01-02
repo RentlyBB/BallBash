@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,10 @@ public class PlayerManager : Singleton<PlayerManager> {
 
     protected PlayerManager() { }
 
+    [SerializeField]
+    private List<PlayerDataSO> playersData;
+
+    [HideInInspector]
     [SerializeField]
     private List<GameObject> list_spawnPoints;
 
@@ -18,15 +23,30 @@ public class PlayerManager : Singleton<PlayerManager> {
     [SerializeField]
     private bool spawnPlayersOnStart = false;
 
-    private void Awake() {
 
+
+    private void Awake() {
         list_spawnPoints.AddRange(GameObject.FindGameObjectsWithTag("PlayerSpawn"));
+        //reset players data
+        resetPlayersData();
     }
 
     private void Start() {
+
+
         if(spawnPlayersOnStart) {
             addPlayers();
         }
+    }
+
+
+    private void resetPlayersData() {
+        foreach(PlayerDataSO pd in playersData) {
+            pd.inPlay = false;
+            pd.isDead = false;
+            pd.health = 0;
+        }
+    
     }
 
     public void addPlayers() {
@@ -37,6 +57,10 @@ public class PlayerManager : Singleton<PlayerManager> {
 
                 PlayerInput cartInput = track.GetComponentInChildren<PlayerInput>();
                 cartInput.SwitchCurrentControlScheme(getPlayerInputScheme(i), Keyboard.current);
+
+                playersData[i].inPlay = true;
+                playersData[i].isDead = false;
+                playersData[i].health = 10;
 
             }
         }

@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 9088392917015972254}
   - component: {fileID: 6665372568556818465}
   - component: {fileID: 8967203266712367846}
-  - component: {fileID: 5788367242972215315}
+  - component: {fileID: 2843793466449287017}
   m_Layer: 0
   m_Name: Cart
   m_TagString: Player
@@ -499,7 +499,7 @@ MonoBehaviour:
   P_additionalBoostSpeed: 3
   P_additionalBoostDeceleration: 0.03
   railCartPosition: 0.5
---- !u!114 &5788367242972215315
+--- !u!114 &2843793466449287017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -508,11 +508,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8765507992922320282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d966e1defee365e4e9d45d229399f694, type: 3}
+  m_Script: {fileID: 11500000, guid: 0833b617388e777458589a4478f7ffa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 3
-  angle: 90
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 512
+  isMagnetActive: 0
