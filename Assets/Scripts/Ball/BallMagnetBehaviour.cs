@@ -4,12 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(BallMovement))]
 public class BallMagnetBehaviour : MonoBehaviour {
 
-    private BallMovement ballMovement;
+    private BallMovement bm;
     private Rigidbody rb;
 
+    private Vector3 normal;
+
+    public bool isMagneted { get; private set; }
+
     private void Awake() {
-        ballMovement = GetComponent<BallMovement>();
+        bm = GetComponent<BallMovement>();
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update() {
+        Debug.DrawRay(transform.position, normal, Color.green);
     }
 
     private void OnEnable() {
@@ -21,28 +29,39 @@ public class BallMagnetBehaviour : MonoBehaviour {
     }
 
     public void magnetBall(Vector3 magnetPos, Vector3 pushDir, Transform parent) {
-        transform.SetParent(parent);
-        ballMovement.changeBallDirection(pushDir);
-        transform.position = new Vector3(magnetPos.x, transform.position.y, magnetPos.z);
-        
-        ballMovement.canApplyForce = false;
-        ballMovement.changeBallRotation();
-       // rb.constraints = RigidbodyConstraints.FreezeAll;
+
+        normal = pushDir * -1;
+        bm.canChangeVelocity = false;
+        bm.canApplyForce = false;
         rb.velocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+
+        bm.changeBallDirection(normal);
+        bm.changeBallRotation();
+        transform.SetParent(parent);
+
+        isMagneted = true;
     }
 
     private void demagnetBall() {
-        ballMovement.setBallSpeed(0);
+        bm.setBallSpeed(0);
         transform.parent = null;
-        ballMovement.canApplyForce = true;
+        bm.canApplyForce = true;
        // rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
     }
 
     public void pushBall() {
-        ballMovement.speedUpBall();
+        bm.speedUpBall();
         transform.parent = null;
-        ballMovement.canApplyForce = true;
-        //rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+        bm.canApplyForce = true;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        isMagneted = false;
+    }
 
+    private void OnCollisionStay(Collision collision) {
+
+        //if(collision.gameObject.GetComponent<IAbility>() != null && isMagneted) {
+        //    transform.position += -transform.forward * Time.deltaTime * 1.05f;
+        //}
     }
 }

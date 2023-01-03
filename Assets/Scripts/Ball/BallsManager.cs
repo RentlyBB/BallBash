@@ -89,9 +89,17 @@ public class BallsManager : MonoBehaviour {
                 return;
             }
 
-            ballToSpawn.gameObject.SetActive(true);
-            ballToSpawn.position = spawnPoint.localPosition;
-            ballToSpawn.rotation = spawnPoint.localRotation;
+            
+
+            var bm = ballToSpawn.GetComponent<BallMovement>();
+
+            bm.activateBall(spawnPoint.position, spawnPoint.localRotation, spawnPoint.transform.forward);
+          
+            
+            //ballToSpawn.position = spawnPoint.position;
+            //ballToSpawn.rotation = spawnPoint.rotation;
+            //ballToSpawn.gameObject.SetActive(true);
+
 
             setRandomSpawnTime();
             curTime = 0;

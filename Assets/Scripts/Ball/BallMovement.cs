@@ -32,11 +32,13 @@ public class BallMovement : MonoBehaviour {
 
     private Vector3 ballMovementDirection;
 
-    private Vector3 colContactNormal = Vector3.forward;
+    private Vector3 colContactNormal;
 
     private Collision bounceSurface;
 
     public Vector3 offset;
+
+    public bool canChangeVelocity;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
@@ -47,7 +49,7 @@ public class BallMovement : MonoBehaviour {
     }
 
     private void OnEnable() {
-        activateBall();
+        //activateBall();
     }
 
     private void OnDisable() {
@@ -67,9 +69,9 @@ public class BallMovement : MonoBehaviour {
 
     private void calculateBounceDirection() {
 
-        if(bounceSurface != null) {
-            ballMovementDirection = Vector3.Reflect(-bounceSurface.relativeVelocity, colContactNormal);
-        }
+        if(!canChangeVelocity) return;
+       
+        ballMovementDirection = Vector3.Reflect(-bounceSurface.relativeVelocity, colContactNormal);
 
         if(Vector3.Angle(ballMovementDirection, colContactNormal) == 0) {
             Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, 0.05f));
@@ -78,13 +80,14 @@ public class BallMovement : MonoBehaviour {
 
         ballMovementDirection.y = 0f;
         //rb.velocity = ballMovementDirection.normalized * ballSpeed;
+        canChangeVelocity = false;
     }
 
     private void processMovement() {
         if(!canApplyForce) return;
 
         // Calculate a rotation a step closer to the target and applies rotation to this object
-        transform.rotation = Quaternion.LookRotation(ballMovementDirection);
+        changeBallRotation();
 
         rb.AddForceAtPosition(ballMovementDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
@@ -97,12 +100,19 @@ public class BallMovement : MonoBehaviour {
         }
     }
 
-    public void activateBall() {
+    public void activateBall(Vector3 pos, Quaternion rot, Vector3 dir) {
         setBallSpeed(0);
+
+        rb.velocity = Vector3.zero;
+
+        transform.position = pos;
+        transform.rotation = rot;
+        
         changeBallDirection(transform.forward);
-        changeBallRotation();
+        
+        gameObject.SetActive(true);
+        
         rb.AddForce(ballMovementDirection * ballSpeed, ForceMode.Impulse);
-        //canApplyForce = true;
     }
 
     public void setBallSpeed(int levelOfSpeed) {
@@ -112,6 +122,7 @@ public class BallMovement : MonoBehaviour {
 
     public void freezeBall() {
         canApplyForce = false;
+        canChangeVelocity = false;
     }
 
     public void unfreezeBall() { 
@@ -119,11 +130,12 @@ public class BallMovement : MonoBehaviour {
     }
 
     public void changeBallDirection(Vector3 newDir) {
+        ballMovementDirection = Vector3.zero;
         ballMovementDirection = newDir;
     }
 
     public void changeBallRotation() {
-        transform.rotation = Quaternion.LookRotation(ballMovementDirection);
+        transform.rotation = Quaternion.LookRotation(ballMovementDirection, Vector3.up);
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -134,6 +146,7 @@ public class BallMovement : MonoBehaviour {
             if(canApplyForce) {
                 bounceSurface = collision;
                 colContactNormal = collision.contacts[0].normal;
+                canChangeVelocity = true;
             }
         }
 
@@ -142,8 +155,10 @@ public class BallMovement : MonoBehaviour {
         }
     }
 
+    
     private void OnCollisionStay(Collision collision) {
         if(collision.transform.GetComponent<CartController>() && collision.contacts[0].normal != colContactNormal) {
+            //This break magnet ability, because its overrides the direction of the push
             ballMovementDirection = collision.contacts[0].normal;
         }
     }
