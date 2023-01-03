@@ -10,8 +10,15 @@ public class GoalHandler : MonoBehaviour {
 
     public PlayerDataSO playerData;
 
+    public bool deactivateAtStart = true;
+
+    public bool nope = false;
+
     private void Start() {
-        transform.GetChild(0).gameObject.SetActive(false);
+
+        if(deactivateAtStart) { 
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
 
@@ -24,7 +31,7 @@ public class GoalHandler : MonoBehaviour {
     }
 
     private void checkIfDead() {
-        if(playerData.isDead || !playerData.inPlay ) {
+        if(playerData.isDead || !playerData.inPlay && !nope) {
             transform.GetChild(0).gameObject.SetActive(true);
         }
     }

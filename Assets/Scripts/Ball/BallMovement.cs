@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour {
 
-    public const RigidbodyConstraints freezeAll = RigidbodyConstraints.FreezeAll;
     public const RigidbodyConstraints active = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-    public const RigidbodyConstraints afterTouchGround = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
     [SerializeField]
     private float ballSpeed;
 
     [SerializeField]
     private float maxVelocity;
-
-    public Vector3 bounceDirection;
 
     [SerializeField]
     private float[] ballSpeedLevels;
@@ -34,7 +30,8 @@ public class BallMovement : MonoBehaviour {
     [HideInInspector]
     public bool canApplyForce = false;
 
-    private bool canChangeVelocityDir = false;
+    private Vector3 ballMovementDirection;
+
     private Vector3 colContactNormal = Vector3.forward;
 
     private Collision bounceSurface;
@@ -46,7 +43,6 @@ public class BallMovement : MonoBehaviour {
     }
 
     private void Start() {
-        
         ballAnimator.speed = ballSpeed;
     }
 
@@ -55,51 +51,43 @@ public class BallMovement : MonoBehaviour {
     }
 
     private void OnDisable() {
-        resetBall();
+        freezeBall();
     }
 
     private void Update() {
         // FixMe
         ballAnimator.speed = ballSpeed;
-
-        Debug.DrawRay(transform.position, bounceDirection, Color.red);
+        Debug.DrawRay(transform.position, ballMovementDirection, Color.red);
     }
 
     private void FixedUpdate() {
-
-        if(canChangeVelocityDir) {
-            calculateBounceDirection();
-        }
-        
-        if(canApplyForce) {
-            rb.AddForceAtPosition(bounceDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
-            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
-
-            // Calculate a rotation a step closer to the target and applies rotation to this object
-            transform.rotation = Quaternion.LookRotation(bounceDirection);
-        }
+        calculateBounceDirection();
+        processMovement();
     }
 
     private void calculateBounceDirection() {
 
-        bounceDirection = Vector3.Reflect(-bounceSurface.relativeVelocity, colContactNormal);
-
-        if(Vector3.Angle(bounceDirection, colContactNormal) == 0) {
-            Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, 0.05f));
-            bounceDirection = bounceDirection + offsetBounce.eulerAngles;
+        if(bounceSurface != null) {
+            ballMovementDirection = Vector3.Reflect(-bounceSurface.relativeVelocity, colContactNormal);
         }
 
-        bounceDirection.y = 0f;
-        rb.velocity = bounceDirection.normalized * ballSpeed;
-        canChangeVelocityDir = false;
+        if(Vector3.Angle(ballMovementDirection, colContactNormal) == 0) {
+            Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, 0.05f));
+            ballMovementDirection += offsetBounce.eulerAngles;
+        }
+
+        ballMovementDirection.y = 0f;
+        //rb.velocity = ballMovementDirection.normalized * ballSpeed;
     }
 
-    public void changeBallDirection(Vector3 newDir) {
-        bounceDirection = newDir;
-    }
+    private void processMovement() {
+        if(!canApplyForce) return;
 
-    public void changeBallRotation() {
-        transform.rotation = Quaternion.LookRotation(bounceDirection);
+        // Calculate a rotation a step closer to the target and applies rotation to this object
+        transform.rotation = Quaternion.LookRotation(ballMovementDirection);
+
+        rb.AddForceAtPosition(ballMovementDirection.normalized * ballSpeed, transform.position, ForceMode.VelocityChange);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }
 
     public void speedUpBall() {
@@ -110,10 +98,11 @@ public class BallMovement : MonoBehaviour {
     }
 
     public void activateBall() {
-        speedLevel = 0;
-        ballSpeed = ballSpeedLevels[speedLevel];
-        bounceDirection = transform.forward;
-        rb.constraints = active;
+        setBallSpeed(0);
+        changeBallDirection(transform.forward);
+        changeBallRotation();
+        rb.AddForce(ballMovementDirection * ballSpeed, ForceMode.Impulse);
+        //canApplyForce = true;
     }
 
     public void setBallSpeed(int levelOfSpeed) {
@@ -121,21 +110,31 @@ public class BallMovement : MonoBehaviour {
         ballSpeed = ballSpeedLevels[speedLevel];
     }
 
-    public void resetBall() {
+    public void freezeBall() {
         canApplyForce = false;
-        canChangeVelocityDir = false;
+    }
+
+    public void unfreezeBall() { 
+        
+    }
+
+    public void changeBallDirection(Vector3 newDir) {
+        ballMovementDirection = newDir;
+    }
+
+    public void changeBallRotation() {
+        transform.rotation = Quaternion.LookRotation(ballMovementDirection);
     }
 
     private void OnCollisionEnter(Collision collision) {
 
-        bounceSurface = collision;
-
-        if(bounceSurface.gameObject.CompareTag("Ground")) {
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        if(collision.gameObject.CompareTag("Ground")) {
             canApplyForce = true;
         } else {
-            colContactNormal = collision.contacts[0].normal;
-            canChangeVelocityDir = true;
+            if(canApplyForce) {
+                bounceSurface = collision;
+                colContactNormal = collision.contacts[0].normal;
+            }
         }
 
         if(collision.transform.GetComponent<CartController>()) {
@@ -145,14 +144,8 @@ public class BallMovement : MonoBehaviour {
 
     private void OnCollisionStay(Collision collision) {
         if(collision.transform.GetComponent<CartController>() && collision.contacts[0].normal != colContactNormal) {
-            bounceDirection = collision.contacts[0].normal;
+            ballMovementDirection = collision.contacts[0].normal;
         }
     }
-
-    //private void OnTriggerEnter(Collider other) {
-    //    if(other.gameObject.CompareTag("Goal")) {
-    //        gameObject.SetActive(false);
-    //    }
-    //}
 }
 

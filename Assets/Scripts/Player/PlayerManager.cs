@@ -23,6 +23,8 @@ public class PlayerManager : Singleton<PlayerManager> {
     [SerializeField]
     private bool spawnPlayersOnStart = false;
 
+    public int baseHealth = 10; 
+
 
 
     private void Awake() {
@@ -60,7 +62,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 
                 playersData[i].inPlay = true;
                 playersData[i].isDead = false;
-                playersData[i].health = 10;
+                playersData[i].health = baseHealth;
 
             }
         }

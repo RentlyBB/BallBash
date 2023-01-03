@@ -14,6 +14,9 @@ public class BallMagnetAbility : MonoBehaviour, IAbility {
     [SerializeField]
     private List<BallMagnetBehaviour> magnetedBalls;
 
+    [SerializeField]
+    private List<BallMagnetBehaviour> ballsInMagetZone;
+
     public void activateAbility() {
         isMagnetActive = true;
     }
@@ -26,18 +29,7 @@ public class BallMagnetAbility : MonoBehaviour, IAbility {
         }
 
         magnetedBalls.Clear();
-        StopCoroutine(demagnetBallsOverTime());
-
     }
-
-    IEnumerator demagnetBallsOverTime() {
-        yield return new WaitForSeconds(magnetTime);
-        if(magnetedBalls.Count > 0) { 
-            demagnetBalls();
-        }
-
-    }
-
 
     private void demagnetBalls() {
         Debug.Log("Demagnet!!");
@@ -47,17 +39,37 @@ public class BallMagnetAbility : MonoBehaviour, IAbility {
 
     }
 
+    public int objectsInMagnetField = 0;
+
+    private void OnTriggerEnter(Collider other) {
+
+        if(other.gameObject.GetComponent<BallMagnetBehaviour>()) {
+            var curBall = other.gameObject.GetComponent<BallMagnetBehaviour>();
+            ballsInMagetZone.Add(curBall);
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other) {
+        if(other.gameObject.GetComponent<BallMagnetBehaviour>()) {
+            var curBall = other.gameObject.GetComponent<BallMagnetBehaviour>();
+            if(ballsInMagetZone.Contains(curBall)) { 
+                ballsInMagetZone.Remove(curBall);
+            }
+        }
+    }
+
 
     private void OnCollisionEnter(Collision col) {
         if(col.gameObject.GetComponent<BallMagnetBehaviour>()) {
             var curBall = col.gameObject.GetComponent<BallMagnetBehaviour>();
 
-            if(isMagnetActive) {
-                curBall.magnetBall(col.contacts[0].point, col.contacts[0].normal, this.transform);
+            var contactPoint = col.contacts[0].point;
+            var contactNormal = col.contacts[0].normal;
+
+            if(isMagnetActive && ballsInMagetZone.Contains(curBall)) {
+                curBall.magnetBall(contactPoint, contactNormal, transform);
                 magnetedBalls.Add(curBall);
-
-                StartCoroutine(demagnetBallsOverTime());
-
             }
         }
     }

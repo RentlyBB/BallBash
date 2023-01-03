@@ -21,28 +21,28 @@ public class BallMagnetBehaviour : MonoBehaviour {
     }
 
     public void magnetBall(Vector3 magnetPos, Vector3 pushDir, Transform parent) {
+        transform.SetParent(parent);
         ballMovement.changeBallDirection(pushDir);
-        ballMovement.transform.position = new Vector3(magnetPos.x, ballMovement.transform.position.y, magnetPos.z);
+        transform.position = new Vector3(magnetPos.x, transform.position.y, magnetPos.z);
         
         ballMovement.canApplyForce = false;
         ballMovement.changeBallRotation();
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+       // rb.constraints = RigidbodyConstraints.FreezeAll;
         rb.velocity = Vector3.zero;
-        transform.SetParent(parent);
     }
 
     private void demagnetBall() {
         ballMovement.setBallSpeed(0);
         transform.parent = null;
         ballMovement.canApplyForce = true;
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+       // rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
     }
 
     public void pushBall() {
         ballMovement.speedUpBall();
         transform.parent = null;
         ballMovement.canApplyForce = true;
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        //rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
 
     }
 }
