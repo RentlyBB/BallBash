@@ -11,7 +11,6 @@ public class PlayerManager : Singleton<PlayerManager> {
     [SerializeField]
     private List<PlayerDataSO> playersData;
 
-    [HideInInspector]
     [SerializeField]
     private List<GameObject> list_spawnPoints;
 
@@ -28,12 +27,13 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 
     private void Awake() {
-        list_spawnPoints.AddRange(GameObject.FindGameObjectsWithTag("PlayerSpawn"));
         //reset players data
         resetPlayersData();
     }
 
     private void Start() {
+
+       // list_spawnPoints.AddRange(GameObject.FindGameObjectsWithTag("PlayerSpawn"));
 
 
         if(spawnPlayersOnStart) {
@@ -68,7 +68,7 @@ public class PlayerManager : Singleton<PlayerManager> {
         }
 
         foreach(var player in PlayerInput.all) {
-            Debug.Log("Player ID: " + player.playerIndex + ", Player Name: " + player.name + ", Player Controll Scheme: " + player.currentControlScheme);
+            //Debug.Log("Player ID: " + player.playerIndex + ", Player Name: " + player.name + ", Player Controll Scheme: " + player.currentControlScheme);
         }
     }
 

@@ -135,11 +135,6 @@ public class CartController : MonoBehaviour {
         }
     }
 
-    public void performeAbility(bool performing) {
-        Debug.Log("Booom!");
-    }
-
-
     private float roundToThreeDigit(float val) {
         return (float)Math.Round(val, 4);
     }

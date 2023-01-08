@@ -10,18 +10,6 @@ public class GoalHandler : MonoBehaviour {
 
     public PlayerDataSO playerData;
 
-    public bool deactivateAtStart = true;
-
-    public bool nope = false;
-
-    private void Start() {
-
-        if(deactivateAtStart) { 
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
-    }
-
-
     private void OnEnable() {
         CanvasSwitcher.onStartGame += checkIfDead;
     }
@@ -31,8 +19,10 @@ public class GoalHandler : MonoBehaviour {
     }
 
     private void checkIfDead() {
-        if(playerData.isDead || !playerData.inPlay && !nope) {
+        if(playerData.isDead || !playerData.inPlay) {
             transform.GetChild(0).gameObject.SetActive(true);
+        } else {
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 

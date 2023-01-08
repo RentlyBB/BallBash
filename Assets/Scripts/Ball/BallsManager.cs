@@ -89,17 +89,17 @@ public class BallsManager : MonoBehaviour {
                 return;
             }
 
-            
-
             var bm = ballToSpawn.GetComponent<BallMovement>();
 
-            bm.activateBall(spawnPoint.position, spawnPoint.localRotation, spawnPoint.transform.forward);
+            var random = Random.Range(-10f, 10f);
+
+            Quaternion rotWithRandom = spawnPoint.rotation * Quaternion.Euler(Vector3.up * random);
+
+            bm.activateBall(spawnPoint.position, rotWithRandom, spawnPoint.transform.forward);
           
-            
             //ballToSpawn.position = spawnPoint.position;
             //ballToSpawn.rotation = spawnPoint.rotation;
             //ballToSpawn.gameObject.SetActive(true);
-
 
             setRandomSpawnTime();
             curTime = 0;

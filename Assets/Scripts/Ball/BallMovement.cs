@@ -70,11 +70,12 @@ public class BallMovement : MonoBehaviour {
     private void calculateBounceDirection() {
 
         if(!canChangeVelocity) return;
-       
+
         ballMovementDirection = Vector3.Reflect(-bounceSurface.relativeVelocity, colContactNormal);
 
         if(Vector3.Angle(ballMovementDirection, colContactNormal) == 0) {
-            Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, 0.05f));
+            var random = Random.Range(-0.05f, 0.05f);
+            Quaternion offsetBounce = Quaternion.Euler(new Vector3(0, 0, random));
             ballMovementDirection += offsetBounce.eulerAngles;
         }
 
@@ -157,10 +158,15 @@ public class BallMovement : MonoBehaviour {
 
     
     private void OnCollisionStay(Collision collision) {
-        if(collision.transform.GetComponent<CartController>() && collision.contacts[0].normal != colContactNormal) {
-            //This break magnet ability, because its overrides the direction of the push
-            ballMovementDirection = collision.contacts[0].normal;
-        }
+
+        // If ball is constatly colliding with something add it to the array of Collision
+        // after that, start "timer" and check if the the ball is still colliding with that object
+        // if yes ball is stucked and you have recalculate ballMovementDirection
+        // if no its fine, physics just dont have enought time to calculate new direction
+    }
+
+    private void OnCollisionExit(Collision collision) {
+        // If collision is contained in array of Collision, then remove it from array
     }
 }
 
