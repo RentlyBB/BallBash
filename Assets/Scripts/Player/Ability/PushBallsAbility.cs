@@ -36,11 +36,13 @@ public class PushBallsAbility : MonoBehaviour, IAbility {
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
 
         if(rangeChecks.Length != 0) {
-
+            
             foreach(Collider colider in rangeChecks) {
                 Transform target = colider.transform;
+                
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
 
+                // If Collider (target) is in the angle – Do something
                 if(Vector3.Angle(transform.forward, directionToTarget) < angle / 2) {
                     target.GetComponent<BallMovement>().changeBallDirection(directionToTarget);
                     target.GetComponent<BallMovement>().speedUpBall();
