@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu]
-public class InputDataSO : ScriptableObject {
+public class InputDataSO : ScriptableObject  {
     
     [System.Serializable]
     public struct AvailableDeviceData {

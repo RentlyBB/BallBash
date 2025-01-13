@@ -27,16 +27,16 @@ namespace samples.Runtime
 			m_Span = (m_Extrude.range.y - m_Extrude.range.x) * .5f;
 		}
 
-		void Update()
+        void Update()
 		{
-			bool closed = m_Extrude.spline.Closed;
+		/*	bool closed = m_Extrude.spline.Closed;
 			float t = closed
 				? Time.time * m_Speed
 				: Mathf.Lerp(-m_Span, 1 + m_Span, math.frac(Time.time * m_Speed));
 			m_Extrude.range = new float2(t - m_Span, t + m_Span);
 
 			if (m_RebuildExtrudeOnUpdate)
-				m_Extrude.Rebuild();
+				m_Extrude.Rebuild();*/
 		}
 	}
 }
