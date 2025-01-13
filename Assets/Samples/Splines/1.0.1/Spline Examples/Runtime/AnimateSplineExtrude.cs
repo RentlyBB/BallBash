@@ -3,29 +3,26 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace samples.Runtime
-{
-	/// <summary>
-	/// Animate extruding a section of a spline.
-	/// </summary>
-	[RequireComponent(typeof(SplineExtrude))]
-	class AnimateSplineExtrude : MonoBehaviour
-	{
-		SplineExtrude m_Extrude;
+namespace samples.Runtime {
+    /// <summary>
+    /// Animate extruding a section of a spline.
+    /// </summary>
+    [RequireComponent(typeof(SplineExtrude))]
+    class AnimateSplineExtrude : MonoBehaviour {
+        SplineExtrude m_Extrude;
 
-		[SerializeField, Range(.0001f, 2f)]
-		float m_Speed = .25f;
+        [SerializeField, Range(.0001f, 2f)]
+        float m_Speed = .25f;
 
-		float m_Span;
+        float m_Span;
 
-		[SerializeField]
-		bool m_RebuildExtrudeOnUpdate = true;
+        [SerializeField]
+        bool m_RebuildExtrudeOnUpdate = true;
 
-		void Start()
-		{
-			m_Extrude = GetComponent<SplineExtrude>();
-			m_Span = (m_Extrude.range.y - m_Extrude.range.x) * .5f;
-		}
+        void Start() {
+            m_Extrude = GetComponent<SplineExtrude>();
+            m_Span = (m_Extrude.range.y - m_Extrude.range.x) * .5f;
+        }
 
         void Update()
 		{
